@@ -35,14 +35,11 @@ h2{
 }
 .dataDiv{
         width: 100%;
-        /* background-color: red;
-        border-radius: 10px; */
 }
 .dataItem{
         position: relative;     
 }
 .imageDiv{
-        /* border: blue 3px solid; */
         border-radius: 10px;
 }
 .image{
@@ -135,7 +132,7 @@ h2{
 }
 .remove-button {
         cursor: pointer;
-        color: red; /* Change la couleur de la croix */
+        color: red;
         margin-left: 10px;
 }
 #cartTitle{
@@ -143,4 +140,34 @@ h2{
 }
 .itemsEmpty{
         color: var(--Rose900);
+}
+@media (max-width: 685px) {
+        #cartTitle{
+                color: blue;
+        }
+        .dataContainer{
+                grid-template-columns: repeat(2, 1fr);
+        }   
+}
+@media (max-width: 600px){
+        #cartTitle{
+                color: green;
+        }
+        .appContainer{
+                display: block;
+        }
+        .datasContainer{
+                width: 100%;
+        }
+        .cartContainer{
+                width:  100%;    
+        }
+}
+@media (max-width: 320px){
+        #cartTitle{
+                color: yellow;
+        }
+        .dataContainer{
+                grid-template-columns: repeat(1, 1fr);
+        }
 }

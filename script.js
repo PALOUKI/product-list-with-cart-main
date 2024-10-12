@@ -93,43 +93,49 @@ $(document).ready(function() {
                     let $removeButton = $('<button>', {
                         text: '✖',
                         class: 'remove-button'
-                    }).on("click", function() {
-                        let itemQuantity = parseInt($item.find('.item-quantity').text());
-                        totalAmount -= itemQuantity * price;
-                        totalItems -= itemQuantity; // Retire le nombre d'articles choisis
+                    })
+
+                $(".cartItems").on("click", ".remove-button", function() {
+                        // let itemQuantity = parseInt($item.find('.item-quantity').text());
+                        // totalAmount -= itemQuantity * price;
+                        // totalItems -= itemQuantity; 
                         $item.remove();
-                        updateTotal(); // Met à jour le total après suppression
-                    });
+                        updateTotal();
+                        
+                });
+                    
             
-                    $cartItems.append(`
+                    // Ajoute le bouton de suppression à l'élément de cart
+                $cartItems.append(`
                         <br>
                         <div class="cart-item" style="font-size: 12px" data-name="${name}">
-                            <span>${name}</span><br> <span class="item-quantity" style="color: hsl(14, 86%, 42%)">${quantity}</span><span style="color: hsl(14, 86%, 42%)">x</span>
-                            <span style="margin-left: 10px;"> $${price.toFixed(2)}</span>
-                            <span style="margin-left: 10px;"> $${(price * quantity).toFixed(2)}</span>
-                             <span  style='margin-left: 40%;padding: 0 2px 0 2px; border:1px solid black; border-radius:20% ' ><svg xmlns="http://www.w3.org/2000/svg" width="5" height="7" fill="none" viewBox="0 0 10 10"><path fill="#CAAFA7" d="M8.375 9.375 5 6 1.625 9.375l-1-1L4 5 .625 1.625l1-1L5 4 8.375.625l1 1L6 5l3.375 3.375-1 1Z"/></svg></span>                     
-                             <hr style='margin-top: 10px' >
+                                <span>${name}</span><br>
+                                <span class="item-quantity" style="color: hsl(14, 86%, 42%)">${quantity}</span>
+                                <span style="color: hsl(14, 86%, 42%)">x</span>
+                                <span style="margin-left: 10px;">$${price.toFixed(2)}</span>
+                                <span style="margin-left: 10px;">$${(price * quantity).toFixed(2)}</span>
+                                <span style="margin-left: 10px;">${$removeButton.prop('outerHTML')}</span> 
+                                <hr style='margin-top: 10px'>
                         </div>
                     `);
-                    
-                    
                 }
             
                 updateTotal();
             
                 // Gère l'affichage du SVG et du montant total
                 if (totalItems > 0) {
-                        $(".empty-cart-svg").hide(); // Cache le SVG
-                        $(".totalPrice p").show(); // Affiche le montant total
-                        $(".itemsEmpty").hide();
-                        $(".confirmOrder").show();
+                    $(".empty-cart-svg").hide(); // Cache le SVG
+                    $(".totalPrice p").show(); // Affiche le montant total
+                    $(".itemsEmpty").hide();
+                    $(".confirmOrder").show();
                 } else {
-                        $(".empty-cart-svg").show(); // Affiche le SVG
-                        $(".totalPrice p").hide(); // Cache le montant total
-                        $(".itemsEmpty").show();
-                        $(".confirmOrder").hide();
+                    $(".empty-cart-svg").show(); // Affiche le SVG
+                    $(".totalPrice p").hide(); // Cache le montant total
+                    $(".itemsEmpty").show();
+                    $(".confirmOrder").hide();
                 }
             }
+            
             
     
         function updateTotal() {
