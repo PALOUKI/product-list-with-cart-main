@@ -89,7 +89,7 @@ $(document).ready(function() {
                     totalAmount += itemTotal;
                     totalItems += quantity; // Ajoute au nombre d'articles choisis
             
-                    // Crée le bouton de suppression
+                    // create suppression button
                     let $removeButton = $('<button>', {
                         text: '✖',
                         class: 'remove-button'
@@ -105,7 +105,7 @@ $(document).ready(function() {
                 });
                     
             
-                    // Ajoute le bouton de suppression à l'élément de cart
+                    // adding cart Items
                 $cartItems.append(`
                         <br>
                         <div class="cart-item" style="font-size: 12px" data-name="${name}">
@@ -122,15 +122,15 @@ $(document).ready(function() {
             
                 updateTotal();
             
-                // Gère l'affichage du SVG et du montant total
+                // management to show or hide empty-cart-svg/totalPrice/confirmOrder
                 if (totalItems > 0) {
-                    $(".empty-cart-svg").hide(); // Cache le SVG
-                    $(".totalPrice p").show(); // Affiche le montant total
+                    $(".empty-cart-svg").hide(); 
+                    $(".totalPrice p").show(); 
                     $(".itemsEmpty").hide();
                     $(".confirmOrder").show();
                 } else {
-                    $(".empty-cart-svg").show(); // Affiche le SVG
-                    $(".totalPrice p").hide(); // Cache le montant total
+                    $(".empty-cart-svg").show(); 
+                    $(".totalPrice p").hide(); 
                     $(".itemsEmpty").show();
                     $(".confirmOrder").hide();
                 }
@@ -141,7 +141,7 @@ $(document).ready(function() {
         function updateTotal() {
                
                 $("#totalAmount").text(`$${totalAmount.toFixed(2)}`);
-                $("#cartTitle").text(`Your cart (${totalItems})`); // Met à jour le titre du panier
+                $("#cartTitle").text(`Your cart (${totalItems})`); // update dart title
             
                 // Show or hide the SVG based on cart items
                 if (totalItems === 0) {
@@ -198,7 +198,7 @@ $(document).ready(function() {
                         text: `$${price.toFixed(2)}`
                 });
     
-                // Ajouter des données au addToCartDiv
+                // adding data to addToCartDiv
                 $addToCartDiv.data('name', name);
                 $addToCartDiv.data('price', price);
         
@@ -210,7 +210,82 @@ $(document).ready(function() {
         
                 $dataContainer.append($dataDiv);
         }
-    
+        function showOrderPopup() {
+                const $orderItems = $(".order-items");
+                $orderItems.empty(); // Clear previous items
+                let orderTotal = 0;
+        
+                $(".cartItems .cart-item").each(function() {
+                    const name = $(this).data("name");
+                    const quantity = $(this).find('.item-quantity').text();
+                    const price = parseFloat($(this).find('.item-quantity').next().next().text().slice(1)); // Extract price from the DOM
+                    const itemTotal = price * quantity;
+        
+                    orderTotal += itemTotal;
+        
+                    $orderItems.append(`
+                        <div>${name} (x${quantity}): $${itemTotal.toFixed(2)}</div>
+                    `);
+                });
+        
+                $("#popupTotalAmount").text(`$${orderTotal.toFixed(2)}`);
+                $("#orderPopup").show(); // Show the popup
+            }
+        
+            // Add click event for the "Confirm Order" button
+            $(".confirmOrder button").on("click", function() {
+                showOrderPopup();
+            });
+        
+            // Close popup functionality
+            $("#closePopup").on("click", function() {
+                $("#orderPopup").hide(); // Hide the popup
+            });
+
+            $('.start-new-order').on('click', function() {
+                // Réinitialisez les variables globales
+                totalAmount = 0;
+                totalItems = 0;
+            
+                // Réinitialisez le contenu du panier
+                $(".cartItems").empty();
+                $(".totalPrice p").hide();
+                $(".empty-cart-svg").show();
+                $(".itemsEmpty").show();
+                $(".confirmOrder").hide();
+            
+                // Réinitialisez l'affichage du titre du panier
+                $("#cartTitle").text(`Your cart (0)`);
+            
+                // Réinitialisez les articles pour montrer le bouton "Add to Cart"
+                $(".dataItem").each(function() {
+                        let $addToCartDiv = $(this).find('.addToCartDiv');
+                        $addToCartDiv.empty(); // Vider le contenu
+                        $addToCartDiv.css({
+                                'background-color': '',
+                                'border': '',
+                                'justify-content': ''
+                        }); // Réinitialiser le style
+                
+                        let $addToCartImg = $('<img>', {
+                                class: "addToCartImg",
+                                src: "./assets/images/icon-add-to-cart.svg"
+                        });
+                        let $addToCartText = $('<span>', {
+                                class: "addToCartText",
+                                text: "add to cart"
+                        });
+                
+                        $addToCartDiv.append($addToCartImg, $addToCartText); // Réajouter le contenu de "Add to Cart"
+                        $addToCartDiv.removeClass('no-hover'); // Supprimer la classe no-hover
+                        // Réinitialiser la bordure rouge
+                        $(this).find('.imageDiv').css('border', ''); 
+                });
+            
+                // Fermer la popup si elle est ouverte
+                $("#orderPopup").hide(); 
+            });
+            
         initState();
 });
     
